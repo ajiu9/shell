@@ -1,0 +1,25 @@
+{
+  "name": "nine-shell",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "this is my shell",
+  "author": "ajiu9",
+  "license": "ISC",
+  "homepage": "https://github.com/ajiu9/shell#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajiu9/shell.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ajiu9/shell/issues"
+  },
+  "keywords": [
+    "shell"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+  }
+}

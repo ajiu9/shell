@@ -1,0 +1,14 @@
+{
+  "name": "obsidian-daily",
+  "version": "1.0.0",
+  "description": "create obsidian-daily template",
+  "author": "",
+  "license": "ISC",
+  "main": "index.js",
+  "bin": {
+    "obsidian-daily": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
