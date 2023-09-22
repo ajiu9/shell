@@ -1,5 +1,6 @@
 {
   "name": "obsidian-daily",
+  "type": "module",
   "version": "1.0.0",
   "description": "create obsidian-daily template",
   "author": "",
@@ -8,6 +9,10 @@
   "bin": {
     "obsidian-daily": "index.js"
   },
+  "files": [
+    "index.js",
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   }

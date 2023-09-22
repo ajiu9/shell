@@ -1,5 +1,6 @@
 {
   "name": "nine-shell",
+  "type": "module",
   "version": "1.0.0",
   "private": "true",
   "description": "this is my shell",
@@ -18,8 +19,14 @@
   ],
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ."
+    "build": "node scripts/build.js",
+    "lint": "eslint . --fix"
   },
   "devDependencies": {
+    "@ajiu9/eslint-config": "^1.0.3",
+    "eslint": "^8.49.0",
+    "execa": "^8.0.1",
+    "minimist": "^1.2.8",
+    "typescript": "^5.2.2"
   }
 }
