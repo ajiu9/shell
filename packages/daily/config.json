@@ -2,5 +2,17 @@
   "daily": {
     "template": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Daily notes模板.md",
     "target": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Calendar/Daily notes"
+  },
+  "saturday": {
+    "template": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Daily notes模板.md",
+    "target": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Calendar/Daily notes"
+  },
+  "sunday": {
+    "template": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Daily notes模板.md",
+    "target": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Calendar/Daily notes"
+  },
+  "week": {
+    "template": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Weekly notes模板.md",
+    "target": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Calendar/Weekly"
   }
 }
