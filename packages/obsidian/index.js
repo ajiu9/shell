@@ -28,8 +28,18 @@ async function run() {
     week: 'week',
   }
   const fileName = currentTime[nameEnum[target]]
-  fs.writeFile(`${config[target].target}/${fileName}.md`, templateData)
-  return templateData
+  const targetTemplateData = getTargetTemplateData(templateData)
+  return fs.writeFile(`${config[target].target}/${fileName}.md`, targetTemplateData)
+
+  function getTargetTemplateData(data) {
+    if (target === 'week') {
+      const time = now
+      time.setDate(time.getDate() + 7)
+      const { week } = getCurrentTime(time)
+      data = data.replace(/\{week\}/g, week)
+    }
+    return data
+  }
 }
 
 function getCurrentTime(nowTime) {
