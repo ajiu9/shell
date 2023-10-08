@@ -14,5 +14,8 @@
   "week": {
     "template": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Weekly notes模版.md",
     "target": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/Calendar/Weekly"
+  },
+  "empty": {
+    "target": "/Users/ajiu9/Documents/Code/github.com/ajiu9/Notes/0-Inbox"
   }
 }
