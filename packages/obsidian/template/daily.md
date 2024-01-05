@@ -1,20 +1,21 @@
-- 今天的 3 Frog 是？
+
+- Today for 3 Frog？
 	- 1
 	- 2
 	- 3
 - Before Work
-	- 6:00 - 7:00 英语
+	- 6:30 - 7:30 English
 - Deep Work 1
 	- 09:00 - 11:15
 - Noon
-	- 12:00 - 12:30 消费昨日资讯 30m
-	- 12:30 - 13:30 读书
-	- 13:10 - 13:30 午休
+	- 11:40 - 12:10 30m
+	- 12:30 - 13:10 Read Book
+	- 13:10 - 13:30 Rest
 - Deep Work 2
-	- 14:00 - 18:00
-- 明天的计划和 3 Frog 是？
-- 运动
+	- 13:30 - 17:30
+- Running
 	- 19:30 - 20:30
 - Shallow Work
 - After Work
-- 想法
+- Analysis
+- Think
