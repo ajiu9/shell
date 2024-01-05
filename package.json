@@ -18,6 +18,13 @@
     "shell"
   ],
   "main": "index.js",
+  "bin": {
+    "obsidian": "index.js"
+  },
+  "files": [
+    "index.js",
+    "packages"
+  ],
   "scripts": {
     "build": "node scripts/build.js",
     "lint": "eslint . --fix"
