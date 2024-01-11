@@ -28,8 +28,7 @@ async function run() {
     task: 'task',
   }
   const fileName = currentTime[nameEnum[target]]
-  const templatePath = config[target].template || `${__dirname}template/${fileName}.md`
-  console.log(templatePath)
+  const templatePath = config[target].template
   let templateData = ''
   if (templatePath)
     templateData = await fs.readFile(templatePath, 'utf8')
