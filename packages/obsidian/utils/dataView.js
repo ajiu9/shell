@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export function getWeeklyTasks({ selector, filterCb }) {
   if (filterCb)
     filterCb = eval(filterCb)
@@ -29,6 +30,29 @@ export function getWeeklyTasks({ selector, filterCb }) {
     return result
   }
 
+  const getSummaries = (data) => {
+    const sums = []
+    data.forEach((_item, index) => {
+      if (index === 0) return sums[index] = 'Total'
+
+      const values = data.map((item) => {
+        // only calculate time of hours
+        return Number(item[index]?.hours)
+      })
+      if (!values.every(value => Number.isNaN(value))) {
+        sums[index] = values.reduce((prev, curr) => {
+          const value = Number(curr)
+          if (!Number.isNaN(value))
+            return prev + curr
+          else
+            return prev
+        }, 0)
+      }
+      if (sums[index]) sums[index] = `${sums[index]} hours`
+    })
+    return sums
+  }
+
   const getData = () => {
     const ret = []
     dv.array(Array.from(taskList)).forEach((item) => {
@@ -43,6 +67,8 @@ export function getWeeklyTasks({ selector, filterCb }) {
         ])
       })
     })
+    const summary = getSummaries(ret)
+    ret.push(summary)
     return ret
   }
   dv.table(tableName, getData())

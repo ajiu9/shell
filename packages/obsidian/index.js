@@ -13,8 +13,6 @@ const target = targets[0] || 'daily'
 
 const config = require('./config.json')
 
-console.log(args)
-
 run()
 
 async function run() {
