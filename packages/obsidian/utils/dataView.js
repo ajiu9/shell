@@ -1,21 +1,64 @@
+/* eslint-disable no-eval */
 /* eslint-disable no-undef */
-export function getWeeklyTasks({ selector, filterCb }) {
+import { getWeek } from './date.js'
+
+export function getTasksData(args) {
+  if (args.weekly) {
+    const s = args.s || `${new Date().getFullYear()}-W-${getWeek(new Date())}.md`
+    return getWeekly(s)
+  }
+  if (args.yearly)
+    return getYearly(args.s || `#Plan/Weekly/${new Date().getFullYear()}`)
+}
+
+function getWeekly(selector) {
+  function getTaskData(options) {
+    const data = `\`\`\`dataviewjs\n
+    ${getFormatWeeklyTask.toString()}\n
+    ${getWeeklyTasks.toString()}\n
+    getWeeklyTasks(${toString(options)})\n\`\`\`
+    `
+    return data
+  }
+  function getWeeklyTasks({ selector, filterCb }) {
+    const page = dv.page(selector)
+    getFormatWeeklyTask(page, filterCb)
+  }
+  let data = getTaskData({ selector, filterCb: item => !item.completed })
+  data = `${data}\n\r` + '---\n\r'
+  data = data + getTaskData({ selector })
+  return data
+}
+
+function getYearly(selector) {
+  const data = `## Yearly Tasks\n\r\`\`\`dataviewjs\n
+  ${getFormatWeeklyTask.toString()}\n
+  const pages = dv.pages('${selector}')
+  pages.forEach((page) => {
+    getFormatWeeklyTask(page)
+  })
+  \n\`\`\`
+  `
+
+  return data
+}
+
+function getFormatWeeklyTask(page, filterCb) {
   if (filterCb)
     filterCb = eval(filterCb)
   else
     filterCb = item => item.completed
 
   const taskList = new Set()
-  const tableName = ['Name', 'Scheduled', 'Completion', 'links']
-  const page = dv.page(selector)
-  if (page) {
-    const { tasks = [], name, path } = page.file
-    taskList.add({
-      name,
-      path,
-      tasks,
-    })
-  }
+  const tableName = ['Name', 'Scheduled', 'Completion'/* , 'links' */]
+  if (!page) return dv.el('p', 'No Data')
+  const { tasks = [], name, path } = page.file
+  dv.header(4, name)
+  taskList.add({
+    name,
+    path,
+    tasks,
+  })
   const parseText = (input) => {
     const regex = /\[(\w+)::([^[\]]*)]/g
     const result = {}
@@ -36,7 +79,7 @@ export function getWeeklyTasks({ selector, filterCb }) {
       if (index === 0) return sums[index] = 'Total'
 
       const values = data.map((item) => {
-        // only calculate time of hours
+      // only calculate time of hours
         return Number(item[index]?.hours)
       })
       if (!values.every(value => Number.isNaN(value))) {
@@ -62,8 +105,8 @@ export function getWeeklyTasks({ selector, filterCb }) {
         ret.push([
           text,
           el.scheduled,
-          el.completion,
-          el.link,
+          el.completion, /* ,
+          el.link, */
         ])
       })
     })
@@ -72,22 +115,6 @@ export function getWeeklyTasks({ selector, filterCb }) {
     return ret
   }
   dv.table(tableName, getData())
-}
-
-export function getTaskData(options) {
-  const data = `\`\`\`dataviewjs\n
-  ${getWeeklyTasks.toString()}\n
-  getWeeklyTasks(${toString(options)})\n
-  \`\`\`
-  `
-  return data
-}
-
-export function getAllTasks(selector) {
-  let data = getTaskData({ selector, filterCb: item => !item.completed })
-  data = `${data}\n\r` + '---\n\r'
-  data = data + getTaskData({ selector })
-  return data
 }
 
 function toString(data) {

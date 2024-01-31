@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import fs from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import minimist from 'minimist'
-import { formatDate, getAllTasks } from './utils/index.js'
+import { formatDate, getTasksData } from './utils/index.js'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const require = createRequire(import.meta.url)
@@ -31,9 +31,7 @@ async function run() {
   const fileName = currentTime[nameEnum[target]]
   let targetTemplateData = ''
   if (fileName === 'task') {
-    let selector = `${currentTime.week}.md`
-    if (args.s) selector = args.s
-    targetTemplateData = getAllTasks(selector)
+    targetTemplateData = getTasksData(args)
   }
   else {
     let templateData = ''
