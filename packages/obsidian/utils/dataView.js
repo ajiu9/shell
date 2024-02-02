@@ -50,7 +50,7 @@ function getFormatWeeklyTask(page, filterCb) {
     filterCb = item => item.completed
 
   const taskList = new Set()
-  const tableName = ['Name', 'Scheduled', 'Completion'/* , 'links' */]
+  const tableName = ['Name', 'Scheduled', 'Project'/* , 'Completion', 'links' */]
   if (!page) return dv.el('p', 'No Data')
   const { tasks = [], name, path } = page.file
   dv.header(4, name)
@@ -61,6 +61,9 @@ function getFormatWeeklyTask(page, filterCb) {
   })
   const parseText = (input) => {
     const regex = /\[(\w+)::([^[\]]*)]/g
+    const projectReg = /【([\w\W]+)】/
+    const typeReg = /(^[\w\W]+)：/
+
     const result = {}
 
     input = input.replace(regex, (match, key, value) => {
@@ -69,6 +72,14 @@ function getFormatWeeklyTask(page, filterCb) {
     })
 
     result.text = input.trim()
+
+    const matchProject = input.match(projectReg)
+    if (matchProject)
+      result.project = matchProject[1]
+
+    const matchType = input.match(typeReg)
+    if (matchType)
+      result.type = matchType[1]
 
     return result
   }
@@ -101,11 +112,12 @@ function getFormatWeeklyTask(page, filterCb) {
     dv.array(Array.from(taskList)).forEach((item) => {
       const { name, path, links, tasks } = item
       tasks.filter(filterCb).forEach((el) => {
-        const { text } = parseText(el.text)
+        const { text, project, type } = parseText(el.text)
         ret.push([
           text,
           el.scheduled,
-          el.completion, /* ,
+          project || type, /* ,
+          el.completion,
           el.link, */
         ])
       })
