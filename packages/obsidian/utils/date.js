@@ -26,6 +26,6 @@ export function getWeek(date) {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1)
   const firstWeekStartDay = firstDayOfYear.getDay()
   const diffDays = Math.ceil((date - (firstDayOfYear - firstWeekStartDay * 86400000)) / 86400000)
-  const week = `${Math.ceil(diffDays / 7)}`
+  const week = `${Math.floor(diffDays / 7)}`
   return week.length === 1 ? padLefZero(week) : week
 }
