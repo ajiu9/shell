@@ -24,8 +24,16 @@ export function formatDate(date) {
 
 export function getWeek(date) {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1)
-  const firstWeekStartDay = firstDayOfYear.getDay()
-  const diffDays = Math.ceil((date - (firstDayOfYear - firstWeekStartDay * 86400000)) / 86400000)
-  const week = `${Math.floor(diffDays / 7)}`
-  return week.length === 1 ? padLefZero(week) : week
+  let firstWeekStartDay = firstDayOfYear.getDay()
+  if (firstWeekStartDay === 0)
+    firstWeekStartDay = 6
+
+  else
+    firstWeekStartDay -= 1
+
+  firstDayOfYear.setDate(firstDayOfYear.getDate() - firstWeekStartDay)
+  const diffDays = (date.getTime() - firstDayOfYear.getTime()) / (1000 * 60 * 60 * 24)
+  const weekNumber = Math.floor(diffDays / 7) + 1
+
+  return weekNumber.toString().padStart(2, '0')
 }
