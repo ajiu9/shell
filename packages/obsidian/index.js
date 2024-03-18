@@ -35,7 +35,7 @@ async function run() {
   }
   else {
     let templateData = ''
-    const templatePath = config[target].template
+    const templatePath = config[target]?.template
     if (templatePath)
       templateData = await fs.readFile(templatePath, 'utf8')
 
