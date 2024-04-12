@@ -90,8 +90,9 @@ function getFormatWeeklyTask(page, filterCb) {
       if (index === 0) return sums[index] = 'Total'
 
       const values = data.map((item) => {
-      // only calculate time of hours
-        return Number(item[index]?.hours)
+      // only calculate time of days,hours,minutes
+        const { days, hours, minutes } = item[index] || {}
+        return Number(days) * 24 + Number(hours) + Number(minutes) / 60
       })
       if (!values.every(value => Number.isNaN(value))) {
         sums[index] = values.reduce((prev, curr) => {
@@ -110,7 +111,7 @@ function getFormatWeeklyTask(page, filterCb) {
   const getData = () => {
     const ret = []
     dv.array(Array.from(taskList)).forEach((item) => {
-      const { name, path, links, tasks } = item
+      const { /* name, path, links, */tasks } = item
       tasks.filter(filterCb).forEach((el) => {
         const { text, project, type } = parseText(el.text)
         ret.push([
