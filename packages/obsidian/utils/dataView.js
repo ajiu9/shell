@@ -34,6 +34,19 @@ function getYearly(selector) {
   const data = `## Yearly Tasks\n\r\`\`\`dataviewjs\n
   ${getFormatWeeklyTask.toString()}\n
   const pages = dv.pages('${selector}')
+  console.log('pages:',pages.forEach(item => console.log('item:',item.file.name)))
+
+  pages.sort((a, b) => {
+    console.log('a:',a,'b:', b)
+    const getWeekNumber = (str) => {
+      const ret = str?.split('-')
+      if (ret && ret.length === 3) return parseInt(ret[2].slice(-2))
+      return 0
+    };
+    console.log(getWeekNumber(b?.file?.name), getWeekNumber(a?.file?.name))
+    return getWeekNumber(b?.file?.name) - getWeekNumber(a?.file?.name);
+  })
+  console.log('pages:',pages.forEach(item => console.log('item:',item.file.name)))
   pages.forEach((page) => {
     getFormatWeeklyTask(page)
   })
@@ -85,12 +98,15 @@ function getFormatWeeklyTask(page, filterCb) {
   }
 
   const getSummaries = (data) => {
+    if (!data) return []
+
     const sums = []
-    data.forEach((_item, index) => {
+    const props = Array.from({ length: data[0]?.length })
+    props?.forEach((_item, index) => {
       if (index === 0) return sums[index] = 'Total'
 
       const values = data.map((item) => {
-      // only calculate time of days,hours,minutes
+        // only calculate time of days,hours,minutes
         const { days, hours, minutes } = item[index] || {}
         return Number(days) * 24 + Number(hours) + Number(minutes) / 60
       })
@@ -104,6 +120,7 @@ function getFormatWeeklyTask(page, filterCb) {
         }, 0)
       }
       if (sums[index]) sums[index] = `${sums[index]} hours`
+      else sums[index] = '-'
     })
     return sums
   }
