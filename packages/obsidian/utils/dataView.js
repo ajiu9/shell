@@ -5,28 +5,28 @@ import { getWeek } from './date.js'
 export function getTasksData(args) {
   if (args.weekly) {
     const s = args.s || `${new Date().getFullYear()}-W-${getWeek(new Date())}.md`
-    return getWeekly(s)
+    return getWeekly(s, args)
   }
   if (args.yearly)
     return getYearly(args.s || `#Plan/Weekly/${new Date().getFullYear()}`)
 }
 
-function getWeekly(selector) {
-  function getTaskData(options) {
+function getWeekly(selector, args) {
+  function getTaskData(params) {
     const data = `\`\`\`dataviewjs\n
     ${getFormatWeeklyTask.toString()}\n
     ${getWeeklyTasks.toString()}\n
-    getWeeklyTasks(${toString(options)})\n\`\`\`
+    getWeeklyTasks(${toString(params)})\n\`\`\`
     `
     return data
   }
-  function getWeeklyTasks({ selector, filterCb }) {
+  function getWeeklyTasks({ selector, filterCb, args }) {
     const page = dv.page(selector)
-    getFormatWeeklyTask(page, filterCb)
+    getFormatWeeklyTask(page, filterCb, args)
   }
   let data = getTaskData({ selector, filterCb: item => !item.completed })
   data = `${data}\n\r` + '---\n\r'
-  data = data + getTaskData({ selector })
+  data = data + getTaskData({ selector, args })
   return data
 }
 
@@ -56,14 +56,18 @@ function getYearly(selector) {
   return data
 }
 
-function getFormatWeeklyTask(page, filterCb) {
+function getFormatWeeklyTask(page, filterCb, args) {
   if (filterCb)
     filterCb = eval(filterCb)
   else
     filterCb = item => item.completed
 
   const taskList = new Set()
-  const tableName = ['Name', 'Scheduled', 'Project'/* , 'Completion', 'links' */]
+
+  const tableName = ['Name', 'Scheduled', 'Project']
+  if (args?.completion) tableName.push('Completion')
+  if (args?.completlinksion) tableName.push('links')
+
   if (!page) return dv.el('p', 'No Data')
   const { tasks = [], name, path } = page.file
   dv.header(4, name)
@@ -125,26 +129,28 @@ function getFormatWeeklyTask(page, filterCb) {
     return sums
   }
 
-  const getData = () => {
+  const getData = (args) => {
     const ret = []
     dv.array(Array.from(taskList)).forEach((item) => {
       const { /* name, path, links, */tasks } = item
       tasks.filter(filterCb).forEach((el) => {
         const { text, project, type } = parseText(el.text)
-        ret.push([
+        const tableItem = [
           text,
           el.scheduled,
-          project || type, /* ,
-          el.completion,
-          el.link, */
-        ])
+          project || type,
+        ]
+        if (args?.completion) tableItem.push(el.completion)
+        if (args?.link) tableItem.push(el.link)
+
+        ret.push(tableItem)
       })
     })
     const summary = getSummaries(ret)
     ret.push(summary)
     return ret
   }
-  dv.table(tableName, getData())
+  dv.table(tableName, getData(args))
 }
 
 function toString(data) {
