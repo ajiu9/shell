@@ -2,6 +2,7 @@ import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import consola from 'consola'
+import pico from 'picocolors'
 
 const require = createRequire(import.meta.url)
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -36,20 +37,41 @@ const outputConfigs = {
 const defaultFormats = ['esm-bundler', 'cjs']
 const packageFormats = packageOptions.formats || defaultFormats
 
-const packageConfig = []
+const packageConfigs = []
 if (process.env.NODE_ENV === 'production') {
-  defaultFormats.forEach((format) => {
+  packageFormats.forEach((format) => {
     if (packageOptions.prod === false)
       return
 
     if (format === 'cjs')
-      consola.success('cjs success')
-      // packageConfigs.push(createProductionConfig(format))
+      packageConfigs.push(createProductionConfig(format))
 
-    if (/^(global|esm-browser)?/.test(format))
-      consola.success('global|esm-browser success')
+    if (/^(global|esm-browser)/.test(format))
+      consola.success(pico.green(`${format} success`))
       // packageConfigs.push(createMinifiedConfig(format))
   })
 }
 
-export default packageConfig
+export default packageConfigs
+
+function createConfig(format, output, plugins = []) {
+  if (!output) {
+    console.log(pico.yellow(`invalid format: "${format}"`))
+    process.exit(1)
+  }
+  return {
+    // input: resolve('src/index.ts'),
+    // output,
+    // plugins: [
+    //   ...plugins,
+    // ],
+    // external: [],
+  }
+}
+
+function createProductionConfig(format) {
+  return createConfig(format, {
+    file: resolve(`dist/${name}.${format}.prod.js`),
+    format: outputConfigs[format].format,
+  })
+}
