@@ -20,13 +20,25 @@
   "main": "index.js",
   "scripts": {
     "build": "node scripts/build.js",
-    "lint": "eslint . --fix"
+    "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
+    "clean:dist": "rimraf dist",
+    "lint": "eslint . --fix",
+    "prepare": "simple-git-hooks"
   },
   "devDependencies": {
     "@ajiu9/eslint-config": "^1.0.3",
     "eslint": "^8.49.0",
     "execa": "^8.0.1",
+    "lint-staged": "^15.2.7",
     "minimist": "^1.2.8",
+    "rimraf": "^6.0.1",
+    "simple-git-hooks": "^2.11.1",
     "typescript": "^5.2.2"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*.{vue,js,ts,jsx,tsx,md,json}": "eslint --fix"
   }
 }

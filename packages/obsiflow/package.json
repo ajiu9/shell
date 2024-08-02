@@ -1,9 +1,9 @@
 {
-  "name": "obsidian-daily",
+  "name": "obsiflow",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.0.1-bete",
   "description": "create obsidian-daily template",
-  "author": "",
+  "author": "ajiu9 <615944323@qq.com> (https://github.com/ajiu9/)",
   "license": "ISC",
   "main": "index.js",
   "bin": {
@@ -15,5 +15,13 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "buildOptions": {
+    "name": "Obsiflow",
+    "formats": [
+      "esm-bundler",
+      "cjs",
+      "global"
+    ]
   }
 }
