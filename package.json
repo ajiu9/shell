@@ -27,11 +27,13 @@
   },
   "devDependencies": {
     "@ajiu9/eslint-config": "^1.0.3",
+    "consola": "^3.2.3",
     "eslint": "^8.49.0",
     "execa": "^8.0.1",
     "lint-staged": "^15.2.7",
     "minimist": "^1.2.8",
     "rimraf": "^6.0.1",
+    "rollup": "^4.19.2",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.2.2"
   },

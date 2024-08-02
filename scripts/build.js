@@ -3,9 +3,14 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { createRequire } from 'node:module'
+import { execa, execaSync } from 'execa'
+import minimist from 'minimist'
 import { targets as allTargets } from './utils.js'
 
 const require = createRequire(import.meta.url)
+const commit = execaSync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
+const args = minimist(process.argv.slice(2))
+const sourceMap = args.sourcemap || args.s
 
 run()
 
@@ -37,7 +42,6 @@ async function runParallel(maxConcurrency, source, iteratorFn) {
 
 async function build(target) {
   const pkgDir = path.resolve(`packages/${target}`)
-  console.log(pkgDir)
   const pkg = require(`${pkgDir}/package.json`)
   // ignore private package
   if (pkg.private) return
@@ -46,4 +50,19 @@ async function build(target) {
     fs.rm(`${pkgDir}/dist`, { recursive: true })
 
   const env = (pkg.buildOptions && pkg.buildOptions.env) || 'production'
+  await execa('rollup',
+    [
+      '-c',
+      '--environment',
+      [
+        `NODE_ENV:${env}`,
+        `COMMIT:${commit}`,
+        `TARGET:${target}`,
+        sourceMap ? 'SOURCE_MAP:true' : '',
+      ]
+        .filter(Boolean)
+        .join(','),
+    ],
+    { stdio: 'inherit' },
+  )
 }
