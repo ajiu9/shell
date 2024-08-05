@@ -3,6 +3,9 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import consola from 'consola'
 import pico from 'picocolors'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+import polyfillNode from 'rollup-plugin-polyfill-node'
+
 
 const require = createRequire(import.meta.url)
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -44,10 +47,12 @@ if (process.env.NODE_ENV === 'production') {
       return
 
     if (format === 'cjs')
+      consola.success(pico.green(`${format} start`))
       packageConfigs.push(createProductionConfig(format))
 
     if (/^(global|esm-browser)/.test(format))
-      consola.success(pico.green(`${format} success`))
+      consola.success(pico.green(`${format} start`))
+      packageConfigs.push(createProductionConfig(format))
       // packageConfigs.push(createMinifiedConfig(format))
   })
 }
@@ -60,12 +65,18 @@ function createConfig(format, output, plugins = []) {
     process.exit(1)
   }
   return {
-    // input: resolve('src/index.ts'),
-    // output,
-    // plugins: [
-    //   ...plugins,
-    // ],
-    // external: [],
+    input: resolve('src/index.ts'),
+    output,
+    plugins: [
+      ...plugins,
+      nodeResolve(),
+      polyfillNode(),
+      // ...(format === 'cjs' ? [] : [polyfillNode()]),
+    ],
+    external: [],
+    // optimizeDeps: {
+    //   include: ['minimist'],
+    // },
   }
 }
 

@@ -19,7 +19,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "pnpm run clean && node scripts/build.js",
     "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
     "clean:dist": "rimraf dist",
     "lint": "eslint . --fix",
@@ -27,6 +27,8 @@
   },
   "devDependencies": {
     "@ajiu9/eslint-config": "^1.0.3",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "consola": "^3.2.3",
     "eslint": "^8.49.0",
     "execa": "^8.0.1",
@@ -35,6 +37,7 @@
     "picocolors": "^1.0.1",
     "rimraf": "^6.0.1",
     "rollup": "^4.19.2",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.2.2"
   },
