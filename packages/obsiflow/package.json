@@ -1,10 +1,23 @@
 {
   "name": "obsiflow",
-  "type": "module",
   "version": "0.0.1-bete",
   "description": "create obsidian-daily template",
   "author": "ajiu9 <615944323@qq.com> (https://github.com/ajiu9/)",
   "license": "ISC",
+  "exports": {
+    ".": {
+      "types": "./dist/obsiflow.d.ts",
+      "node": {
+        "production": "./dist/obsiflow.cjs.prod.js",
+        "development": "./dist/obsiflow.cjs.js",
+        "default": "./index.js"
+      },
+      "module": "./dist/obsiflow.esm-bundler.js",
+      "require": "./index.js",
+      "import": "./dist/obsiflow.esm-bundler.js"
+    },
+    "./*": "./*"
+  },
   "main": "index.js",
   "bin": {
     "obsidian": "index.js"
