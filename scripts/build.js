@@ -3,6 +3,7 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { createRequire } from 'node:module'
+import { parseArgs } from 'node:util'
 import { execa, execaSync } from 'execa'
 import minimist from 'minimist'
 import { targets as allTargets } from './utils.js'
@@ -10,12 +11,41 @@ import { targets as allTargets } from './utils.js'
 const require = createRequire(import.meta.url)
 const commit = execaSync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 const args = minimist(process.argv.slice(2))
+
 const sourceMap = args.sourcemap || args.s
+const { positionals: targets } = parseArgs({
+  allowPositionals: true,
+  options: {
+    formats: {
+      type: 'string',
+      short: 'f',
+    },
+    withTypes: {
+      type: 'boolean',
+      short: 't',
+    },
+    sourceMap: {
+      type: 'boolean',
+      short: 's',
+    },
+    release: {
+      type: 'boolean',
+    },
+    all: {
+      type: 'boolean',
+      short: 'a',
+    },
+    size: {
+      type: 'boolean',
+    },
+  },
+})
 
 run()
 
 function run() {
-  buildAll(allTargets)
+  const resolvedTargets = targets.length ? targets : allTargets
+  buildAll(resolvedTargets)
 }
 
 async function buildAll(targets) {

@@ -13,21 +13,21 @@
         "default": "./index.js"
       },
       "module": "./dist/obsiflow.esm-bundler.js",
-      "require": "./index.js",
+      "require": "./dist/obsiflow.cjs.prod.js",
       "import": "./dist/obsiflow.esm-bundler.js"
     },
     "./*": "./*"
   },
-  "main": "index.js",
+  "main": "dist/obsiflow.esm-bundler.js",
   "bin": {
-    "obsidian": "index.js"
+    "obsiflow": "bin/index.js"
   },
   "files": [
-    "index.js",
+    "bin",
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf dist"
   },
   "buildOptions": {
     "name": "Obsiflow",
