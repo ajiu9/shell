@@ -1,4 +1,4 @@
-import { padLefZero } from './general.js'
+import { padLefZero } from './general'
 
 export function formatDate(date) {
   const year = date.getFullYear()

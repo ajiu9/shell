@@ -1,5 +1,6 @@
 {
   "name": "obsiflow",
+  "type": "module",
   "version": "0.0.1-bete-01",
   "description": "create obsidian-daily template",
   "author": "ajiu9 <615944323@qq.com> (https://github.com/ajiu9/)",
@@ -20,14 +21,16 @@
   },
   "main": "dist/obsiflow.esm-bundler.js",
   "bin": {
-    "obsiflow": "bin/index.js"
+    "obsiflow": "src/index.ts"
   },
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "dev": "tsx src/index.ts"
   },
   "buildOptions": {
     "name": "Obsiflow",

@@ -1,6 +1,6 @@
 /* eslint-disable no-eval */
-/* eslint-disable no-undef */
-import { getWeek } from './date.js'
+
+import { getWeek } from './date'
 
 export function getTasksData(args) {
   if (args.weekly) {
