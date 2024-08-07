@@ -12,11 +12,11 @@ const require = createRequire(import.meta.url)
 const commit = spawnSync('git', ['rev-parse', '--short=7', 'HEAD'])
   .stdout.toString()
   .trim()
-console.log('commit:----------------------', commit)
+
 const args = minimist(process.argv.slice(2))
 
 const sourceMap = args.sourcemap || args.s
-const { positionals: targets } = parseArgs({
+const { values, positionals: targets } = parseArgs({
   allowPositionals: true,
   options: {
     formats: {
@@ -43,6 +43,9 @@ const { positionals: targets } = parseArgs({
     },
   },
 })
+
+console.log('values: ', values)
+console.log('targets: ', targets)
 
 run()
 

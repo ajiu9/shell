@@ -24,12 +24,14 @@
     "clean:dist": "rimraf dist",
     "clean:obsiflow": "pnpm -C packages/obsiflow clean",
     "lint": "eslint . --fix",
+    "check": "tsc --incremental --noEmit",
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {
     "@ajiu9/eslint-config": "^1.0.3",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@types/node": "^22.1.0",
     "consola": "^3.2.3",
     "eslint": "^8.49.0",
     "lint-staged": "^15.2.7",
