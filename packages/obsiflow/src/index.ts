@@ -3,8 +3,14 @@ import { createRequire } from 'node:module'
 import { parseArgs } from 'node:util'
 import { formatDate, getTasksData } from './utils/index'
 import { ExitCode } from './exit-code'
+import path from 'node:path'
+import { mkdirp } from 'mkdirp'
+import fsSync from 'node:fs'
 
 console.log(process.env.HOME)
+const uPath = process.env.HOME
+const configDir = path.resolve(uPath, '.obsiflow')
+const configPath = path.resolve(configDir, 'config.json')
 
 const require = createRequire(import.meta.url)
 
@@ -38,6 +44,8 @@ export async function main() {
     // Setup global error handlers
     process.on('uncaughtException', errorHandler)
     process.on('unhandledRejection', errorHandler)
+
+    await loadConfig()
 
     const now = new Date()
     if (values.next && ['daily', 'saturday', 'sunday'].includes(target)) now.setDate(now.getDate() + 1)
@@ -90,4 +98,12 @@ function errorHandler(error: Error): void {
 
   console.error(message)
   process.exit(ExitCode.FatalError)
+}
+
+async function loadConfig() {
+  await mkdirp(configDir);
+
+  const exit = fsSync.existsSync(configPath)
+  console.log('exit:', exit)
+
 }
