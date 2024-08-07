@@ -4,12 +4,15 @@ import fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { parseArgs } from 'node:util'
-import { execa, execaSync } from 'execa'
+import { spawnSync } from 'node:child_process'
 import minimist from 'minimist'
-import { targets as allTargets } from './utils.js'
+import { targets as allTargets, exec } from './utils.js'
 
 const require = createRequire(import.meta.url)
-const commit = execaSync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
+const commit = spawnSync('git', ['rev-parse', '--short=7', 'HEAD'])
+  .stdout.toString()
+  .trim()
+console.log('commit:----------------------', commit)
 const args = minimist(process.argv.slice(2))
 
 const sourceMap = args.sourcemap || args.s
@@ -80,7 +83,7 @@ async function build(target) {
     fs.rm(`${pkgDir}/dist`, { recursive: true })
 
   const env = (pkg.buildOptions && pkg.buildOptions.env) || 'production'
-  await execa('rollup',
+  await exec('rollup',
     [
       '-c',
       '--environment',
