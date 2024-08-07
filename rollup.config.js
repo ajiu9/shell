@@ -5,6 +5,7 @@ import consola from 'consola'
 import pico from 'picocolors'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import polyfillNode from 'rollup-plugin-polyfill-node'
+import esbuild from 'rollup-plugin-esbuild'
 
 const require = createRequire(import.meta.url)
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -70,6 +71,10 @@ function createConfig(format, output, plugins = []) {
       ...plugins,
       nodeResolve(),
       polyfillNode(),
+      esbuild({
+        minify: false,
+        target: 'es2019',
+      }),
       // ...(format === 'cjs' ? [] : [polyfillNode()]),
     ],
     external: [],

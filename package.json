@@ -39,8 +39,10 @@
     "picocolors": "^1.0.1",
     "rimraf": "^6.0.1",
     "rollup": "^4.19.2",
+    "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "simple-git-hooks": "^2.11.1",
+    "tsx": "^4.16.5",
     "typescript": "^5.2.2"
   },
   "simple-git-hooks": {
