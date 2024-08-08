@@ -1,18 +1,18 @@
-import fs from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { parseArgs } from 'node:util'
+import path from 'node:path'
+import { existsSync } from 'node:fs'
+import { mkdirp } from 'mkdirp'
+import type { CurrentTimeType } from './utils/index'
 import { formatDate, getTasksData } from './utils/index'
 import { ExitCode } from './exit-code'
-import path from 'node:path'
-import { mkdirp } from 'mkdirp'
-import fsSync from 'node:fs'
 
-console.log(process.env.HOME)
 const uPath = process.env.HOME
-const configDir = path.resolve(uPath, '.obsiflow')
-const configPath = path.resolve(configDir, 'config.json')
-
 const require = createRequire(import.meta.url)
+const configDir = path.resolve(uPath as string, '.obsiflow')
+const resolve = p => path.resolve(configDir, p)
+const configPath = resolve('config.json')
 
 const { values, positionals: targets } = parseArgs({
   allowPositionals: true,
@@ -35,7 +35,10 @@ const { values, positionals: targets } = parseArgs({
 console.log(values, targets)
 const target = targets[0] || 'daily'
 
-const config = require('../config.json')
+let config: { [x: string]: {
+  target: string
+  template?: string
+} }
 
 main()
 
@@ -50,7 +53,7 @@ export async function main() {
     const now = new Date()
     if (values.next && ['daily', 'saturday', 'sunday'].includes(target)) now.setDate(now.getDate() + 1)
     if (values.next && target === 'weekly') now.setDate(now.getDate() + 7)
-    const currentTime = formatDate(now)
+    const currentTime: CurrentTimeType = formatDate(now)
     const nameEnum = {
       daily: 'time',
       saturday: 'time',
@@ -68,14 +71,14 @@ export async function main() {
       let templateData = ''
       const templatePath = config[target]?.template
       if (templatePath)
-        templateData = await fs.readFile(templatePath, 'utf8')
+        templateData = await readFile(templatePath, 'utf8')
 
       targetTemplateData = getTargetTemplateData(templateData)
     }
 
-    return fs.writeFile(`${config[target].target}/${fileName}.md`, targetTemplateData)
+    return writeFile(`${config[target].target}/${fileName}.md`, targetTemplateData)
 
-    function getTargetTemplateData(data) {
+    function getTargetTemplateData(data: string) {
       if (target === 'weekly') {
         const time = now
         time.setDate(time.getDate() + 7)
@@ -101,9 +104,36 @@ function errorHandler(error: Error): void {
 }
 
 async function loadConfig() {
-  await mkdirp(configDir);
+  await mkdirp(configDir)
 
-  const exit = fsSync.existsSync(configPath)
-  console.log('exit:', exit)
-
+  const exit = existsSync(configPath)
+  const defaultConfig = {
+    daily: {
+      template: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Daily notes模板.md`,
+      target: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Calendar/Daily notes`,
+    },
+    saturday: {
+      template: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Daily notes模板.md`,
+      target: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Calendar/Daily notes`,
+    },
+    sunday: {
+      template: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Daily notes模板.md`,
+      target: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Calendar/Daily notes`,
+    },
+    weekly: {
+      template: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Weekly notes模版.md`,
+      target: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Calendar/Weekly`,
+    },
+    empty: {
+      target: `${uPath}/Documents/Code/github.com/ajiu9/Notes/0-Inbox`,
+    },
+    task: {
+      target: `${uPath}/Documents/Code/github.com/ajiu9/Notes/0-Inbox`,
+    },
+  }
+  if (exit) {
+    config = await require(resolve('config.json'))
+    return
+  }
+  writeFile(configPath, JSON.stringify(defaultConfig, null, 2))
 }

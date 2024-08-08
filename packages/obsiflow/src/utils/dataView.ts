@@ -11,8 +11,8 @@ export function getTasksData(args) {
     return getYearly(args.s || `#Plan/Weekly/${new Date().getFullYear()}`)
 }
 
-function getWeekly(selector, args) {
-  function getTaskData(params) {
+function getWeekly(selector: any, args: any) {
+  function getTaskData(params: { selector: any; filterCb?: (item: any) => boolean; args?: any }) {
     const data = `\`\`\`dataviewjs\n
     ${getFormatWeeklyTask.toString()}\n
     ${getWeeklyTasks.toString()}\n
@@ -30,7 +30,7 @@ function getWeekly(selector, args) {
   return data
 }
 
-function getYearly(selector) {
+function getYearly(selector: any) {
   const data = `## Yearly Tasks\n\r\`\`\`dataviewjs\n
   ${getFormatWeeklyTask.toString()}\n
   const pages = dv.pages('${selector}')

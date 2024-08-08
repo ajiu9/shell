@@ -1,6 +1,18 @@
 import { padLefZero } from './general'
 
-export function formatDate(date) {
+export interface CurrentTimeType {
+  year: string | number
+  month: string | number
+  day: string | number
+  hours: string | number
+  minutes: string | number
+  seconds: string | number
+  time: string | number
+  week: string | number
+  empty: string
+  task: string
+}
+export function formatDate(date: Date): CurrentTimeType {
   const year = date.getFullYear()
   const month = `${date.getMonth() + 1}`
   const day = `${date.getDate()}`
@@ -22,7 +34,7 @@ export function formatDate(date) {
   }
 }
 
-export function getWeek(date) {
+export function getWeek(date: Date) {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1)
   let firstWeekStartDay = firstDayOfYear.getDay()
   if (firstWeekStartDay === 0)
