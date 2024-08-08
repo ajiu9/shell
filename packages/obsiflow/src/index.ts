@@ -1,9 +1,8 @@
-import { readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { parseArgs } from 'node:util'
 import path from 'node:path'
 import { existsSync } from 'node:fs'
-import { mkdirp } from 'mkdirp'
 import type { CurrentTimeType } from './utils/index'
 import { formatDate, getTasksData } from './utils/index'
 import { ExitCode } from './exit-code'
@@ -104,7 +103,7 @@ function errorHandler(error: Error): void {
 }
 
 async function loadConfig() {
-  await mkdirp(configDir)
+  if (!existsSync(configDir)) await mkdir(configDir)
 
   const exit = existsSync(configPath)
   const defaultConfig = {

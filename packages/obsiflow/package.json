@@ -38,8 +38,5 @@
       "cjs",
       "global"
     ]
-  },
-  "dependencies": {
-    "mkdirp": "^3.0.1"
   }
 }
