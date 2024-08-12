@@ -58,6 +58,7 @@ function getYearly(selector: any) {
 
 function getFormatWeeklyTask(page, filterCb, args) {
   if (filterCb)
+
     filterCb = eval(filterCb)
   else
     filterCb = item => item.completed

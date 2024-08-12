@@ -75,6 +75,8 @@ export async function main() {
       targetTemplateData = getTargetTemplateData(templateData)
     }
 
+    console.log('name:', `${config[target].target}/${fileName}.md`)
+
     return writeFile(`${config[target].target}/${fileName}.md`, targetTemplateData)
 
     function getTargetTemplateData(data: string) {
@@ -106,6 +108,7 @@ async function loadConfig() {
   if (!existsSync(configDir)) await mkdir(configDir)
 
   const exit = existsSync(configPath)
+
   const defaultConfig = {
     daily: {
       template: `${uPath}/Documents/Code/github.com/ajiu9/Notes/Extras/Templates/Calendar模板/Daily notes模板.md`,
@@ -130,9 +133,8 @@ async function loadConfig() {
       target: `${uPath}/Documents/Code/github.com/ajiu9/Notes/0-Inbox`,
     },
   }
-  if (exit) {
-    config = await require(resolve('config.json'))
-    return
-  }
-  writeFile(configPath, JSON.stringify(defaultConfig, null, 2))
+  if (!exit)
+    await writeFile(configPath, JSON.stringify(defaultConfig, null, 2))
+
+  config = await require(resolve('config.json'))
 }

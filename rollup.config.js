@@ -1,7 +1,6 @@
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import consola from 'consola'
 import pico from 'picocolors'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import polyfillNode from 'rollup-plugin-polyfill-node'
@@ -47,12 +46,11 @@ if (process.env.NODE_ENV === 'production') {
       return
 
     if (format === 'cjs')
-      consola.success(pico.green(`${format} start`))
-    packageConfigs.push(createProductionConfig(format))
+      packageConfigs.push(createProductionConfig(format))
+    else
+      packageConfigs.push(createProductionConfig(format))
 
-    if (/^(global|esm-browser)/.test(format))
-      consola.success(pico.green(`${format} start`))
-    packageConfigs.push(createProductionConfig(format))
+    // if (/^(global|esm-browser)/.test(format))
     // packageConfigs.push(createMinifiedConfig(format))
   })
 }
@@ -70,17 +68,21 @@ function createConfig(format, output, plugins = []) {
     plugins: [
       ...plugins,
       nodeResolve(),
-      polyfillNode(),
+      // polyfillNode(),
       esbuild({
         minify: false,
         target: 'esnext',
       }),
-      // ...(format === 'cjs' ? [] : [polyfillNode()]),
+      ...(format === 'cjs' ? [] : [polyfillNode()]),
     ],
     external: [],
     // optimizeDeps: {
     //   include: ['minimist'],
     // },
+    onwarn(warning, warn) {
+      if (warning.code === 'EVAL' && warning.id.includes('dataView')) return
+      warn(warning)
+    },
   }
 }
 
