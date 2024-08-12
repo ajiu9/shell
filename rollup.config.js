@@ -73,7 +73,7 @@ function createConfig(format, output, plugins = []) {
       polyfillNode(),
       esbuild({
         minify: false,
-        target: 'es2019',
+        target: 'esnext',
       }),
       // ...(format === 'cjs' ? [] : [polyfillNode()]),
     ],
