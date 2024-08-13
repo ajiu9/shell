@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      cac:
+        specifier: ^6.7.14
+        version: 6.7.14
     devDependencies:
       '@ajiu9/eslint-config':
         specifier: ^1.0.3
@@ -577,6 +581,10 @@ packages:
 
   builtins@5.1.0:
     resolution: {integrity: sha512-SW9lzGTLvWTP1AY8xeAMZimqDrIaSdLQUcVr9DMef51niJ022Ri87SwRRKYm4A6iHfkPaiVUu/Duw2Wc4J7kKg==}
+
+  cac@6.7.14:
+    resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
+    engines: {node: '>=8'}
 
   call-bind@1.0.7:
     resolution: {integrity: sha512-GHTSNSYICQ7scH7sZ+M2rFopRoLh8t2bLSW6BbgrtLsahOIB5iyAVJf9GjWK3cYTDaMj4XdBpM1cA6pIS0Kv2w==}
@@ -2440,6 +2448,8 @@ snapshots:
   builtins@5.1.0:
     dependencies:
       semver: 7.6.3
+
+  cac@6.7.14: {}
 
   call-bind@1.0.7:
     dependencies:

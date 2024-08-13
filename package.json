@@ -25,7 +25,11 @@
     "clean:obsiflow": "pnpm -C packages/obsiflow clean",
     "lint": "eslint . --fix",
     "check": "tsc --incremental --noEmit",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "start": "pnpm -C packages/obsiflow start"
+  },
+  "dependencies": {
+    "cac": "^6.7.14"
   },
   "devDependencies": {
     "@ajiu9/eslint-config": "^1.0.3",

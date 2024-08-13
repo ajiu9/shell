@@ -10,7 +10,7 @@ import { ExitCode } from './exit-code'
 const uPath = process.env.HOME
 const require = createRequire(import.meta.url)
 const configDir = path.resolve(uPath as string, '.obsiflow')
-const resolve = p => path.resolve(configDir, p)
+const resolve = (p: string) => path.resolve(configDir, p)
 const configPath = resolve('config.json')
 
 const { values, positionals: targets } = parseArgs({
