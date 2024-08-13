@@ -5,7 +5,7 @@ import path from 'node:path'
 import { existsSync } from 'node:fs'
 import type { CurrentTimeType } from './utils/index'
 import { formatDate, getTasksData } from './utils/index'
-import { ExitCode } from './exit-code'
+import { ExitCode } from './cli/exit-code'
 
 const uPath = process.env.HOME
 const require = createRequire(import.meta.url)
