@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "dev": "tsx src/index.ts"
+    "start": "tsx src/index.ts"
   },
   "buildOptions": {
     "name": "Obsiflow",
