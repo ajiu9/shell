@@ -1,11 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
-import { parseArgs } from 'node:util'
+
+// import { parseArgs } from 'node:util'
 import path from 'node:path'
 import { existsSync } from 'node:fs'
 import type { CurrentTimeType } from './utils/index'
 import { formatDate, getTasksData } from './utils/index'
-import { ExitCode } from './cli/exit-code'
 
 const uPath = process.env.HOME
 const require = createRequire(import.meta.url)
@@ -13,95 +13,55 @@ const configDir = path.resolve(uPath as string, '.obsiflow')
 const resolve = (p: string) => path.resolve(configDir, p)
 const configPath = resolve('config.json')
 
-const { values, positionals: targets } = parseArgs({
-  allowPositionals: true,
-  options: {
-    next: {
-      type: 'boolean',
-      short: 'n',
-    },
-    weekly: {
-      type: 'boolean',
-      short: 'w',
-    },
-    task: {
-      type: 'boolean',
-      short: 't',
-    },
-  },
-})
-
-console.log(values, targets)
-const target = targets[0] || 'daily'
-
 let config: { [x: string]: {
   target: string
   template?: string
 } }
 
-main()
+export async function run(argsOptions) {
+  console.log('argsOptions:', argsOptions)
+  const { target, ...args } = argsOptions
 
-export async function main() {
-  try {
-    // Setup global error handlers
-    process.on('uncaughtException', errorHandler)
-    process.on('unhandledRejection', errorHandler)
+  await loadConfig()
 
-    await loadConfig()
-
-    const now = new Date()
-    if (values.next && ['daily', 'saturday', 'sunday'].includes(target)) now.setDate(now.getDate() + 1)
-    if (values.next && target === 'weekly') now.setDate(now.getDate() + 7)
-    const currentTime: CurrentTimeType = formatDate(now)
-    const nameEnum = {
-      daily: 'time',
-      saturday: 'time',
-      sunday: 'time',
-      weekly: 'week',
-      empty: 'empty',
-      task: 'task',
-    }
-    const fileName = currentTime[nameEnum[target]]
-    let targetTemplateData = ''
-    if (fileName === 'task') {
-      targetTemplateData = getTasksData(values)
-    }
-    else {
-      let templateData = ''
-      const templatePath = config[target]?.template
-      if (templatePath)
-        templateData = await readFile(templatePath, 'utf8')
-
-      targetTemplateData = getTargetTemplateData(templateData)
-    }
-
-    console.log('name:', `${config[target].target}/${fileName}.md`)
-
-    return writeFile(`${config[target].target}/${fileName}.md`, targetTemplateData)
-
-    function getTargetTemplateData(data: string) {
-      if (target === 'weekly') {
-        const time = now
-        time.setDate(time.getDate() + 7)
-        const { week } = formatDate(time)
-        data = data.replace(/\{week\}/g, week)
-      }
-      return data
-    }
+  const now = new Date()
+  if (args.next && ['daily', 'saturday', 'sunday'].includes(target)) now.setDate(now.getDate() + 1)
+  if (args.next && target === 'weekly') now.setDate(now.getDate() + 7)
+  const currentTime: CurrentTimeType = formatDate(now)
+  const nameEnum = {
+    daily: 'time',
+    saturday: 'time',
+    sunday: 'time',
+    weekly: 'week',
+    empty: 'empty',
+    task: 'task',
   }
-  catch (error) {
-    errorHandler(error as Error)
+  const fileName = currentTime[nameEnum[target]]
+  let targetTemplateData = ''
+  if (fileName === 'task') {
+    targetTemplateData = getTasksData(args)
   }
-}
+  else {
+    let templateData = ''
+    const templatePath = config[target]?.template
+    if (templatePath)
+      templateData = await readFile(templatePath, 'utf8')
 
-function errorHandler(error: Error): void {
-  let message = error.message || String(error)
+    targetTemplateData = getTargetTemplateData(templateData)
+  }
 
-  if (process.env.DEBUG || process.env.NODE_ENV === 'development')
-    message = error.stack || message
+  console.log('name:', `${config[target].target}/${fileName}.md`)
+  return writeFile(`${config[target].target}/${fileName}.md`, targetTemplateData)
 
-  console.error(message)
-  process.exit(ExitCode.FatalError)
+  function getTargetTemplateData(data: string) {
+    if (target === 'weekly') {
+      const time = now
+      time.setDate(time.getDate() + 7)
+      const { week } = formatDate(time)
+      data = data.replace(/\{week\}/g, week)
+    }
+    return data
+  }
 }
 
 async function loadConfig() {

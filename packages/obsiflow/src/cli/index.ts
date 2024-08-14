@@ -1,4 +1,5 @@
 import { version as packageVersion } from '../../package.json'
+import { run } from '../index'
 import { ExitCode } from './exit-code'
 import { parseArgs } from './parse-args'
 
@@ -9,7 +10,6 @@ export async function main(): Promise<void> {
     process.on('unhandledRejection', errorHandler)
 
     const { help, version, quiet, options } = await parseArgs()
-    console.log(help, version, quiet, options)
 
     if (help) {
       process.exit(ExitCode.Success)
@@ -19,9 +19,12 @@ export async function main(): Promise<void> {
       console.log(packageVersion)
       process.exit(ExitCode.Success)
     }
+    else {
+      if (!quiet) run(options)
+    }
   }
   catch (error) {
-
+    errorHandler(error as Error)
   }
 }
 
