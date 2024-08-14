@@ -9,7 +9,7 @@ export async function main(): Promise<void> {
     process.on('unhandledRejection', errorHandler)
 
     const { help, version, quiet, options } = await parseArgs()
-    console.log('1111', help, version, quiet, options)
+    console.log(help, version, quiet, options)
 
     if (help) {
       process.exit(ExitCode.Success)

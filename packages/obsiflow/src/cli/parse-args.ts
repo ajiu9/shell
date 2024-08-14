@@ -1,6 +1,5 @@
 // import process from 'node:process'
 // import { valid as isValidVersion } from 'semver'
-// import cac from 'cac'
 // import c from 'picocolors'
 // import { isReleaseType } from '../release-type'
 // import type { VersionBumpOptions } from '../types/version-bump-options'
@@ -131,7 +130,7 @@ export function loadCliArgs(argv = process.argv) {
   const cli = cac('obsiflow')
   cli.version(version)
     .usage('[...files]')
-    .option('-v, --version <version>', 'Target version')
+    // .option('-v, --version <version>', 'Target version')
     .help()
   const result = cli.parse(argv)
   const args = result.options
