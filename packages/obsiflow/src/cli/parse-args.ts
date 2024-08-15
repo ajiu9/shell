@@ -41,15 +41,16 @@ export async function parseArgs(): Promise<ParsedArgs> {
 export function loadCliArgs(argv = process.argv) {
   const cli = cac('obsiflow')
   cli.version(version)
-    .usage('[...files]')
+    .usage('[options]')
     .option('-d, --daily', 'Generate daily plan template')
     .option('-w, --weekly', 'Generate weekly plan template')
     .option('-e, --empty', 'Generate empty template')
     .option('-t, --task', 'Generate daily plan template')
     .option('-n, --next', 'Generate daily plan template')
     .option('-q, --quiet', 'Quiet mode')
-    // .option('-v, --version <version>', 'Target version')
+    .option('-v, --version <version>', 'Target version')
     .help()
+
   const result = cli.parse(argv)
   const args = result.options
 
