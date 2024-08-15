@@ -1,5 +1,5 @@
 import { version as packageVersion } from '../../package.json'
-import { run } from '../index'
+import { run } from '../run'
 import { ExitCode } from './exit-code'
 import { parseArgs } from './parse-args'
 

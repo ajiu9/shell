@@ -1,6 +1,6 @@
 {
   "name": "obsiflow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "create obsidian-daily template",
   "author": "ajiu9 <615944323@qq.com> (https://github.com/ajiu9/)",
   "license": "ISC",
@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "start": "tsx src/cli/run.ts"
+    "start": "tsx src/index.ts"
   },
   "buildOptions": {
     "name": "Obsiflow",

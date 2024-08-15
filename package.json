@@ -34,6 +34,7 @@
   "devDependencies": {
     "@ajiu9/eslint-config": "^1.0.3",
     "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/node": "^22.1.0",
     "consola": "^3.2.3",
