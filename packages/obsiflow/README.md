@@ -31,7 +31,7 @@ npm install -g obsiflow
 ## Demo
 $ obsiflow -d
 
-[obsiflow-daily.png](https://github.com/ajiu9/shell/main/static/imag/obsiflow-daily.png)
+[obsiflow-daily.png](https://raw.githubusercontent.com/ajiu9/shell/main/static/img/obsiflow-daily.png)
 
 
 [npm-image]: https://img.shields.io/npm/v/obsiflow.svg?style=flat-square
