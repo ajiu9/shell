@@ -2,6 +2,15 @@
 
 import { getWeek } from './date'
 
+export interface taskItem {
+  text: string
+  project?: string
+  type?: string
+  scheduled?: string
+  completion?: string
+  link?: string
+}
+
 export function getTasksData(args) {
   if (args.weekly) {
     const s = args.s || `${new Date().getFullYear()}-W-${getWeek(new Date())}.md`
@@ -130,13 +139,14 @@ function getFormatWeeklyTask(page, filterCb, args) {
   }
 
   const getData = (args) => {
-    const ret = []
+    const ret: Array<taskItem[]> = []
     dv.array(Array.from(taskList)).forEach((item) => {
       const { /* name, path, links, */tasks } = item
       tasks.filter(filterCb).forEach((el) => {
         const { text, project, type } = parseText(el.text)
+        if (!text.includes('[work]')) return
         const tableItem = [
-          text,
+          text.replace('[work]', ''),
           el.scheduled,
           project || type,
         ]

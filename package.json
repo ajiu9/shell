@@ -26,7 +26,7 @@
     "lint": "eslint . --fix",
     "check": "tsc --incremental --noEmit",
     "prepare": "simple-git-hooks",
-    "start": "pnpm -C packages/obsiflow start"
+    "test": "pnpm build && pnpm -C packages/obsiflow test"
   },
   "dependencies": {
     "cac": "^6.7.14"
